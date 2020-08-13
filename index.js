@@ -1,11 +1,8 @@
-const inquirer = require('inquirer')
-const fs = require('fs')
+const inquirer = require('inquirer');
+const fs = require('fs');
+const generateMarkdown = require("./utils/generateMarkdown");
 // array of questions for user
-// const questions = [
-
-// ];
-
-inquirer.prompt([
+const questions = [
     {
         type: 'input',
         name: 'title',
@@ -59,30 +56,28 @@ inquirer.prompt([
         type: 'input',
         name: 'email',
         message: 'enter your email'
-    }
+    },
     {
         type: 'input',
         name: 'username',
         message: 'Enter your Github Username'
     },
 
-])
+ ];
 
 // function to write README file
-// function writeToFile(fileName, data) {
-// }
-.then (({title, description, installation, usage, license, contributors, tests, questions, email,username}) =>
-{ fs.writeFile('README.md', `
-
-`)
-
-}
-)
-
-// function to initialize program
-function init() {
-
-}
+function writeToFile(fileName, data) {
+    fs.writeFile(fileName + '.md', data, function (err) {
+        if (err) {
+            console.log(err)
+        }
+    })
+  }
+ // function to initialize program
+ async function init() {
+    const response = await inquirer.prompt(questions);
+    writeToFile("README.md", generateMarkdown(response));
+ }
 
 // function call to initialize program
 init();
